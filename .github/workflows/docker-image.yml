@@ -14,10 +14,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-#    - name: Build the Docker image
-#      run: docker build . --file tools/docker/hue/Dockerfile --tag my-hue:$(date +%s)
-    - name: Build and Push the Docker image
-      run: |
-        echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin docker.io
-        docker build . --file tools/docker/hue/Dockerfile --tag docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY }}:$GITHUB_SHA
-        docker push docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY }}:$GITHUB_SHA
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+    - name: Get the version
+      id: vars
+      run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+#    - name: Build the tagged Docker image
+#      run: docker build . --file tools/docker/hue/Dockerfile --tag stephbat/hue:${{steps.vars.outputs.tag}}
+#    - name: Push the tagged Docker image
+#      run: docker push stephbat/hue:${{steps.vars.outputs.tag}}
+    - name: Build the latest Docker image
+      run: docker build . --file tools/docker/hue/Dockerfile --tag stephbat/hue:latest
+    - name: Push the latest Docker image
+      run: docker push stephbat/hue:latest
