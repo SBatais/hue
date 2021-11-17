@@ -36,7 +36,7 @@ RUN apt-get update -y && apt-get install -y \
 
 ADD . /hue
 
-RUN pip3 install --upgrade --no-cache-dir setuptools virtualenv pip xmlsec && \
+RUN pip3 install --upgrade --no-cache-dir setuptools virtualenv pip && \
   curl -sL https://deb.nodesource.com/setup_14.x | sudo bash - && \
   apt-get install -y nodejs && \
   addgroup hue && \
