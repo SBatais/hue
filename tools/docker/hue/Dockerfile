@@ -20,6 +20,7 @@ RUN apt-get update -y && apt-get install -y \
   python3.8-dev \
   python3.8-distutils \
   # added start
+  apt-utils \
   xmlsec1 \
   libxmlsec1 \
   libxslt1.1 \
